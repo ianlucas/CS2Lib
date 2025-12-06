@@ -28,5 +28,6 @@ public static class CEconItemViewExtensions
     /// </summary>
     /// <param name="item">The CEconItemView to check.</param>
     /// <returns>True if the item is a melee weapon; otherwise, false.</returns>
-    public static bool IsMelee(this CEconItemView item) => CS2Lib.IsMeleeDef(item.ItemDefinitionIndex);
+    public static bool IsMelee(this CEconItemView item) =>
+        CS2Lib.IsMeleeDef(item.ItemDefinitionIndex);
 }

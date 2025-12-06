@@ -40,8 +40,11 @@ public static class CS2Lib
         var assembly = Assembly.GetExecutingAssembly();
         var resourceName = "CS2Lib.Resources.items.json";
 
-        using var stream = assembly.GetManifestResourceStream(resourceName)
-            ?? throw new InvalidOperationException($"Could not find embedded resource: {resourceName}");
+        using var stream =
+            assembly.GetManifestResourceStream(resourceName)
+            ?? throw new InvalidOperationException(
+                $"Could not find embedded resource: {resourceName}"
+            );
 
         return JsonSerializer.Deserialize(stream, CS2ItemJsonContext.Default.CS2ItemArray)
             ?? throw new InvalidOperationException("Failed to deserialize items.json");
@@ -52,7 +55,8 @@ public static class CS2Lib
         var items = Items;
         var dictionary = new ConcurrentDictionary<int, CS2Item>(
             Environment.ProcessorCount * 2,
-            items.Length);
+            items.Length
+        );
 
         foreach (var item in items)
             dictionary.TryAdd(item.Id, item);
@@ -65,7 +69,8 @@ public static class CS2Lib
         var items = Items;
         var dictionary = new ConcurrentDictionary<int, string>(
             Environment.ProcessorCount * 2,
-            items.Length);
+            items.Length
+        );
 
         foreach (var item in items)
         {
@@ -81,7 +86,8 @@ public static class CS2Lib
         var items = Items;
         var dictionary = new ConcurrentDictionary<int, CS2Item>(
             Environment.ProcessorCount * 2,
-            items.Length);
+            items.Length
+        );
 
         foreach (var item in items)
         {

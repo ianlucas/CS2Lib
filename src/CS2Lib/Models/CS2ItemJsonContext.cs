@@ -14,8 +14,7 @@ namespace CS2Lib.Models;
 [JsonSourceGenerationOptions(
     PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-    GenerationMode = JsonSourceGenerationMode.Metadata)]
+    GenerationMode = JsonSourceGenerationMode.Metadata
+)]
 [JsonSerializable(typeof(CS2Item[]))]
-internal partial class CS2ItemJsonContext : JsonSerializerContext
-{
-}
+internal partial class CS2ItemJsonContext : JsonSerializerContext { }
