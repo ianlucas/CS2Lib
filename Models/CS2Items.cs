@@ -22,7 +22,7 @@ public static class CS2Items
     private static CS2Item[] LoadItems()
     {
         var assembly = Assembly.GetExecutingAssembly();
-        var resourceName = "CS2Lib.items.json";
+        var resourceName = "CS2Lib.Resources.items.json";
 
         using var stream = assembly.GetManifestResourceStream(resourceName)
             ?? throw new InvalidOperationException($"Could not find embedded resource: {resourceName}");

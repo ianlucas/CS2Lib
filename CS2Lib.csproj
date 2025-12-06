@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="items.json" />
+    <EmbeddedResource Include="Resources\items.json" />
   </ItemGroup>
 
 </Project>
