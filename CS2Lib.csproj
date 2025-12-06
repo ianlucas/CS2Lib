@@ -12,6 +12,10 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/ianlucas/CS2Lib</RepositoryUrl>
     <RootNamespace>CS2Lib</RootNamespace>
+
+    <!-- Enable JSON source generation and trimming support for optimal performance -->
+    <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
+    <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
 
   <ItemGroup>
