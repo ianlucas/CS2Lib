@@ -30,6 +30,11 @@ public static class CS2Lib
     /// </summary>
     private static ConcurrentDictionary<int, string> TypeByDef => _typeByDef.Value;
 
+    /// <summary>
+    /// Lazy-loaded dictionary for O(1) item lookups by def (base items only).
+    /// </summary>
+    private static ConcurrentDictionary<int, CS2Item> ItemsByDef => _itemsByDef.Value;
+
     private static readonly Lazy<CS2Item[]> _items = new(() =>
     {
         var assembly = Assembly.GetExecutingAssembly();
@@ -71,6 +76,22 @@ public static class CS2Lib
         return dictionary;
     });
 
+    private static readonly Lazy<ConcurrentDictionary<int, CS2Item>> _itemsByDef = new(() =>
+    {
+        var items = Items;
+        var dictionary = new ConcurrentDictionary<int, CS2Item>(
+            Environment.ProcessorCount * 2,
+            items.Length);
+
+        foreach (var item in items)
+        {
+            if (item.Def.HasValue && item.Base == true)
+                dictionary.TryAdd(item.Def.Value, item);
+        }
+
+        return dictionary;
+    });
+
     /// <summary>
     /// Gets all CS2 items.
     /// </summary>
@@ -91,11 +112,21 @@ public static class CS2Lib
     }
 
     /// <summary>
+    /// Gets a CS2 item by its definition value.
+    /// </summary>
+    /// <param name="def">The definition value of the item.</param>
+    /// <returns>The base CS2Item if found; otherwise, null.</returns>
+    public static CS2Item? GetItemByDef(int def)
+    {
+        return ItemsByDef.TryGetValue(def, out var item) ? item : null;
+    }
+
+    /// <summary>
     /// Checks if the given def corresponds to a weapon item.
     /// </summary>
     /// <param name="def">The def value to check.</param>
     /// <returns>True if the def is a weapon; otherwise, false.</returns>
-    public static bool IsItemDefWeapon(int def)
+    public static bool IsWeaponDef(int def)
     {
         return TypeByDef.TryGetValue(def, out var type) && type == CS2ItemType.Weapon;
     }
@@ -105,7 +136,7 @@ public static class CS2Lib
     /// </summary>
     /// <param name="def">The def value to check.</param>
     /// <returns>True if the def is an agent; otherwise, false.</returns>
-    public static bool IsItemDefAgent(int def)
+    public static bool IsAgentDef(int def)
     {
         return TypeByDef.TryGetValue(def, out var type) && type == CS2ItemType.Agent;
     }
@@ -115,7 +146,7 @@ public static class CS2Lib
     /// </summary>
     /// <param name="def">The def value to check.</param>
     /// <returns>True if the def is a collectible; otherwise, false.</returns>
-    public static bool IsItemDefCollectible(int def)
+    public static bool IsCollectibleDef(int def)
     {
         return TypeByDef.TryGetValue(def, out var type) && type == CS2ItemType.Collectible;
     }
@@ -125,7 +156,7 @@ public static class CS2Lib
     /// </summary>
     /// <param name="def">The def value to check.</param>
     /// <returns>True if the def is gloves; otherwise, false.</returns>
-    public static bool IsItemDefGloves(int def)
+    public static bool IsGlovesDef(int def)
     {
         return TypeByDef.TryGetValue(def, out var type) && type == CS2ItemType.Gloves;
     }
@@ -135,7 +166,7 @@ public static class CS2Lib
     /// </summary>
     /// <param name="def">The def value to check.</param>
     /// <returns>True if the def is a melee; otherwise, false.</returns>
-    public static bool IsItemDefMelee(int def)
+    public static bool IsMeleeDef(int def)
     {
         return TypeByDef.TryGetValue(def, out var type) && type == CS2ItemType.Melee;
     }
@@ -145,8 +176,18 @@ public static class CS2Lib
     /// </summary>
     /// <param name="def">The def value to check.</param>
     /// <returns>True if the def is a utility; otherwise, false.</returns>
-    public static bool IsItemDefUtility(int def)
+    public static bool IsUtilityDef(int def)
     {
         return TypeByDef.TryGetValue(def, out var type) && type == CS2ItemType.Utility;
+    }
+
+    /// <summary>
+    /// Checks if the given designer name corresponds to a melee item.
+    /// </summary>
+    /// <param name="designerName">The designer name to check.</param>
+    /// <returns>True if the designer name is a melee; otherwise, false.</returns>
+    public static bool IsMeleeDesignerName(string designerName)
+    {
+        return designerName.Contains("bayonet") || designerName.Contains("knife");
     }
 }

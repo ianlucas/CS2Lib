@@ -1,3 +1,6 @@
 <Solution>
-  <Project Path="CS2Lib.csproj" />
+  <Folder Name="/src/">
+    <Project Path="src/CS2Lib.SwiftlyCS2/CS2Lib.SwiftlyCS2.csproj" />
+    <Project Path="src/CS2Lib/CS2Lib.csproj" />
+  </Folder>
 </Solution>
