@@ -20,6 +20,11 @@ public static class CS2Lib
     /// </summary>
     private static ConcurrentDictionary<int, CS2Item> ItemsById => _itemsById.Value;
 
+    /// <summary>
+    /// Lazy-loaded dictionary for O(1) item type lookups by def.
+    /// </summary>
+    private static ConcurrentDictionary<int, string> TypeByDef => _typeByDef.Value;
+
     private static readonly Lazy<CS2Item[]> _items = new(() =>
     {
         var assembly = Assembly.GetExecutingAssembly();
@@ -45,6 +50,22 @@ public static class CS2Lib
         return dictionary;
     });
 
+    private static readonly Lazy<ConcurrentDictionary<int, string>> _typeByDef = new(() =>
+    {
+        var items = Items;
+        var dictionary = new ConcurrentDictionary<int, string>(
+            Environment.ProcessorCount * 2,
+            items.Length);
+
+        foreach (var item in items)
+        {
+            if (item.Def.HasValue)
+                dictionary.TryAdd(item.Def.Value, item.Type);
+        }
+
+        return dictionary;
+    });
+
     /// <summary>
     /// Gets all CS2 items.
     /// </summary>
@@ -62,5 +83,65 @@ public static class CS2Lib
     public static CS2Item? GetItemById(int id)
     {
         return ItemsById.TryGetValue(id, out var item) ? item : null;
+    }
+
+    /// <summary>
+    /// Checks if the given def corresponds to a weapon item.
+    /// </summary>
+    /// <param name="def">The def value to check.</param>
+    /// <returns>True if the def is a weapon; otherwise, false.</returns>
+    public static bool IsItemDefWeapon(int def)
+    {
+        return TypeByDef.TryGetValue(def, out var type) && type == CS2ItemType.Weapon;
+    }
+
+    /// <summary>
+    /// Checks if the given def corresponds to an agent item.
+    /// </summary>
+    /// <param name="def">The def value to check.</param>
+    /// <returns>True if the def is an agent; otherwise, false.</returns>
+    public static bool IsItemDefAgent(int def)
+    {
+        return TypeByDef.TryGetValue(def, out var type) && type == CS2ItemType.Agent;
+    }
+
+    /// <summary>
+    /// Checks if the given def corresponds to a collectible item.
+    /// </summary>
+    /// <param name="def">The def value to check.</param>
+    /// <returns>True if the def is a collectible; otherwise, false.</returns>
+    public static bool IsItemDefCollectible(int def)
+    {
+        return TypeByDef.TryGetValue(def, out var type) && type == CS2ItemType.Collectible;
+    }
+
+    /// <summary>
+    /// Checks if the given def corresponds to gloves.
+    /// </summary>
+    /// <param name="def">The def value to check.</param>
+    /// <returns>True if the def is gloves; otherwise, false.</returns>
+    public static bool IsItemDefGloves(int def)
+    {
+        return TypeByDef.TryGetValue(def, out var type) && type == CS2ItemType.Gloves;
+    }
+
+    /// <summary>
+    /// Checks if the given def corresponds to a melee item.
+    /// </summary>
+    /// <param name="def">The def value to check.</param>
+    /// <returns>True if the def is a melee; otherwise, false.</returns>
+    public static bool IsItemDefMelee(int def)
+    {
+        return TypeByDef.TryGetValue(def, out var type) && type == CS2ItemType.Melee;
+    }
+
+    /// <summary>
+    /// Checks if the given def corresponds to a utility item.
+    /// </summary>
+    /// <param name="def">The def value to check.</param>
+    /// <returns>True if the def is a utility; otherwise, false.</returns>
+    public static bool IsItemDefUtility(int def)
+    {
+        return TypeByDef.TryGetValue(def, out var type) && type == CS2ItemType.Utility;
     }
 }
