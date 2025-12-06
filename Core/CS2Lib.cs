@@ -4,9 +4,9 @@ using System.Text.Json;
 namespace CS2Lib;
 
 /// <summary>
-/// Provides access to CS2 item data.
+/// Main library class for interacting with CS2 items.
 /// </summary>
-public static class CS2Items
+public static class CS2Lib
 {
     private static readonly Lazy<CS2Item[]> _items = new(LoadItems);
 
