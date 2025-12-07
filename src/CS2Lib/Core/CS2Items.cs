@@ -13,7 +13,7 @@ namespace CS2Lib;
 /// <summary>
 /// Main library class for interacting with CS2 items.
 /// </summary>
-public static class CS2Lib
+public static class CS2Items
 {
     /// <summary>
     /// Lazy-loaded cache of all CS2 items. Deserialized once on first access.

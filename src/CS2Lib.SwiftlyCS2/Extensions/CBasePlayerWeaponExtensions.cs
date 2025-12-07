@@ -20,6 +20,6 @@ public static class CBasePlayerWeaponExtensions
     public static string GetDesignerName(this CBasePlayerWeapon weapon)
     {
         var designerName = weapon.AttributeManager.Item.GetDesignerName() ?? weapon.DesignerName;
-        return CS2Lib.IsMeleeDesignerName(designerName) ? "weapon_knife" : designerName;
+        return CS2Items.IsMeleeDesignerName(designerName) ? "weapon_knife" : designerName;
     }
 }

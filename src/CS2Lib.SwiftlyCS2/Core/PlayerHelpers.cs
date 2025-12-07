@@ -7,7 +7,7 @@ using SwiftlyS2.Shared.Players;
 
 namespace CS2Lib.SwiftlyCS2.Core;
 
-public static class EntityUtils
+public static class PlayerHelpers
 {
     public static Team ToggleTeam(Team team) =>
         team > Team.Spectator

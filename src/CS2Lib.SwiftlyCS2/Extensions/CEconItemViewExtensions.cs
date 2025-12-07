@@ -19,7 +19,7 @@ public static class CEconItemViewExtensions
     /// <returns>The designer name prefixed with "weapon_", or null if the item is not found.</returns>
     public static string? GetDesignerName(this CEconItemView item)
     {
-        var designerName = CS2Lib.GetItemByDef(item.ItemDefinitionIndex)?.Model;
+        var designerName = CS2Items.GetItemByDef(item.ItemDefinitionIndex)?.Model;
         return designerName != null ? $"weapon_{designerName}" : null;
     }
 
@@ -29,5 +29,5 @@ public static class CEconItemViewExtensions
     /// <param name="item">The CEconItemView to check.</param>
     /// <returns>True if the item is a melee weapon; otherwise, false.</returns>
     public static bool IsMelee(this CEconItemView item) =>
-        CS2Lib.IsMeleeDef(item.ItemDefinitionIndex);
+        CS2Items.IsMeleeDef(item.ItemDefinitionIndex);
 }
